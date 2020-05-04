@@ -1,24 +1,21 @@
+import java.util.*;
 public class EmpWageBuilder {
 	public static final int IS_FULL_TIME = 1;
         public static final int IS_PART_TIME = 2;
-	public static final int MAX_NUMBER_OF_COMPANIES=4;
 
 	public int empHrs = 0;
 	private int numOfCompany = 0;
-	private CompanyEmpWage[] companyEmpWageArray;
-
-	public EmpWageBuilder () {
-		companyEmpWageArray = new CompanyEmpWage[MAX_NUMBER_OF_COMPANIES];
-	}
+	private ArrayList<CompanyEmpWage> companyEmpWageArrayList = new ArrayList<CompanyEmpWage>();
 
 	private void addCompanyEmpWage (String company, int empRatePerHr, int maxWorkingDays, int maxWorkingHrsPerMonth) {
-		companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHr, maxWorkingDays, maxWorkingHrsPerMonth);
+		CompanyEmpWage companyEmpWageDetails = new CompanyEmpWage(company, empRatePerHr, maxWorkingDays, maxWorkingHrsPerMonth);
+		companyEmpWageArrayList.add(companyEmpWageDetails);
 		numOfCompany++;
 	}
 
 	private	void computeEmpWageForCompany () {
 		for(int company = 0; company< numOfCompany; company++ ) {
-			int totalEmpWage = this.computeEmpWageForCompany(companyEmpWageArray[company]);
+			int totalEmpWage = this.computeEmpWageForCompany(companyEmpWageArrayList.get(company));
                 }
 	}
 
@@ -51,6 +48,7 @@ public class EmpWageBuilder {
 
 	public static void main (String[] args) {
 		EmpWageBuilder empWageBuilder = new  EmpWageBuilder();
+                empWageBuilder.addCompanyEmpWage("Amazon",15,22,70);
 		empWageBuilder.addCompanyEmpWage("DMart",20,15,60);
                 empWageBuilder.addCompanyEmpWage("Reliance",10,25,100);
 		empWageBuilder.addCompanyEmpWage("STAR BUCKS",30,20,80);
