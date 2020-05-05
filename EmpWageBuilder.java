@@ -1,11 +1,14 @@
 import java.util.*;
 public class EmpWageBuilder {
+	//constants
 	public static final int IS_FULL_TIME = 1;
         public static final int IS_PART_TIME = 2;
-
+	//variables
 	public int empHrs = 0;
 	private int numOfCompany = 0;
 	private ArrayList<CompanyEmpWage> companyEmpWageArrayList = new ArrayList<CompanyEmpWage>();
+	public Map<Integer, Integer> empDailyWage = new HashMap<Integer, Integer>();
+        public static Map<String, Object> empDailyWageWithCompany = new HashMap<>();
 
 	private void addCompanyEmpWage (String company, int empRatePerHr, int maxWorkingDays, int maxWorkingHrsPerMonth) {
 		CompanyEmpWage companyEmpWageDetails = new CompanyEmpWage(company, empRatePerHr, maxWorkingDays, maxWorkingHrsPerMonth);
@@ -16,6 +19,7 @@ public class EmpWageBuilder {
 	private	void computeEmpWageForCompany () {
 		for(int company = 0; company< numOfCompany; company++ ) {
 			int totalEmpWage = this.computeEmpWageForCompany(companyEmpWageArrayList.get(company));
+			System.out.println(companyEmpWageArrayList.get(company).company +" Employee wage for a month is " + totalEmpWage);
                 }
 	}
 
@@ -23,12 +27,13 @@ public class EmpWageBuilder {
 		int totalEmpHrs = 0, day = 1;
                 while (day <= companyEmpWage.maxWorkingDays && totalEmpHrs < companyEmpWage.maxWorkingHrsPerMonth) {
                         getWorkingHrs();
+			empDailyWage.put(day, (empHrs * companyEmpWage.empRatePerHr));
                         totalEmpHrs += empHrs;
                         day++;
                 }
-           		int totalEmpWage = totalEmpHrs * companyEmpWage.empRatePerHr;
-			System.out.println(companyEmpWage.company +" Employee wage for a month is " + totalEmpWage);
-		return totalEmpWage;
+		empDailyWageWithCompany.put(companyEmpWage.company, empDailyWage);
+		empDailyWage = new HashMap<Integer, Integer>();
+           	return (totalEmpHrs * companyEmpWage.empRatePerHr);
 	}
 
         public void getWorkingHrs () {
@@ -48,11 +53,13 @@ public class EmpWageBuilder {
 
 	public static void main (String[] args) {
 		EmpWageBuilder empWageBuilder = new  EmpWageBuilder();
-                empWageBuilder.addCompanyEmpWage("Amazon",15,22,70);
-		empWageBuilder.addCompanyEmpWage("DMart",20,15,60);
-                empWageBuilder.addCompanyEmpWage("Reliance",10,25,100);
-		empWageBuilder.addCompanyEmpWage("STAR BUCKS",30,20,80);
-		empWageBuilder.addCompanyEmpWage("McDonald's",20,24,100);
+                empWageBuilder.addCompanyEmpWage("Amazon",15,8,8);
+		empWageBuilder.addCompanyEmpWage("DMart",20,5,10);
+                empWageBuilder.addCompanyEmpWage("Reliance",10,3,12);
+		empWageBuilder.addCompanyEmpWage("Starbucks",30,2,8);
+		empWageBuilder.addCompanyEmpWage("McDonald's",20,4,16);
 		empWageBuilder.computeEmpWageForCompany();
+		System.out.println(": Daily employee wage :");
+		System.out.println(empDailyWageWithCompany);
 	}
 }
