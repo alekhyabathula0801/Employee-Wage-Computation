@@ -9,6 +9,7 @@ public class EmpWageBuilder {
 	private ArrayList<CompanyEmpWage> companyEmpWageArrayList = new ArrayList<CompanyEmpWage>();
 	public Map<Integer, Integer> empDailyWage = new HashMap<Integer, Integer>();
         public static Map<String, Object> empDailyWageWithCompany = new HashMap<>();
+	public static HashMap<String, Integer> monthlyEmpWage = new HashMap<>();
 
 	private void addCompanyEmpWage (String company, int empRatePerHr, int maxWorkingDays, int maxWorkingHrsPerMonth) {
 		CompanyEmpWage companyEmpWageDetails = new CompanyEmpWage(company, empRatePerHr, maxWorkingDays, maxWorkingHrsPerMonth);
@@ -19,7 +20,7 @@ public class EmpWageBuilder {
 	private	void computeEmpWageForCompany () {
 		for(int company = 0; company< numOfCompany; company++ ) {
 			int totalEmpWage = this.computeEmpWageForCompany(companyEmpWageArrayList.get(company));
-			System.out.println(companyEmpWageArrayList.get(company).company +" Employee wage for a month is " + totalEmpWage);
+			monthlyEmpWage.put(companyEmpWageArrayList.get(company).company, totalEmpWage);
                 }
 	}
 
@@ -51,6 +52,32 @@ public class EmpWageBuilder {
                 }
 	}
 
+	public void listOfCompanies () {
+		System.out.println("List of companies");
+                for(String key : monthlyEmpWage.keySet()) {
+                	System.out.println(key);
+                }
+		System.out.println("Please enter valid company name from the list");
+	}
+
+	public void getTotalEmpWage (String companyName) {
+		try {
+			if ( companyName.length() == 0 ) {
+                                System.out.println("Entered empty");
+				listOfCompanies();
+			} else if ( monthlyEmpWage.get(companyName) != null ) {
+				int totalWage = (int)monthlyEmpWage.get(companyName);
+                	        System.out.println(companyName +" Employee wage for a month is " + totalWage);
+                	} else {
+				System.out.println("Entered invalid company name");
+				listOfCompanies();
+                	}
+		} catch (NullPointerException e) {
+			System.out.println("Entered Null");
+			listOfCompanies();
+		}
+	}
+
 	public static void main (String[] args) {
 		EmpWageBuilder empWageBuilder = new  EmpWageBuilder();
                 empWageBuilder.addCompanyEmpWage("Amazon",15,8,8);
@@ -58,8 +85,19 @@ public class EmpWageBuilder {
                 empWageBuilder.addCompanyEmpWage("Reliance",10,3,12);
 		empWageBuilder.addCompanyEmpWage("Starbucks",30,2,8);
 		empWageBuilder.addCompanyEmpWage("McDonald's",20,4,16);
+
 		empWageBuilder.computeEmpWageForCompany();
+
 		System.out.println(": Daily employee wage :");
 		System.out.println(empDailyWageWithCompany);
+
+		empWageBuilder.getTotalEmpWage("Starbucks");
+		empWageBuilder.getTotalEmpWage("DMart");
+		empWageBuilder.getTotalEmpWage("Reliance");
+		empWageBuilder.getTotalEmpWage("Amazon");
+		empWageBuilder.getTotalEmpWage("McDonald's");
+		empWageBuilder.getTotalEmpWage("reliance");
+		empWageBuilder.getTotalEmpWage("");
+		empWageBuilder.getTotalEmpWage(null);
 	}
 }
