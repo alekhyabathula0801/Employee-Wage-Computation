@@ -52,7 +52,7 @@ public class EmpWageBuilder {
                 }
 	}
 
-	public void listOfCompanies () {
+	public void getListOfCompanies () {
 		System.out.println("List of companies");
                 for(String key : monthlyEmpWage.keySet()) {
                 	System.out.println(key);
@@ -64,17 +64,17 @@ public class EmpWageBuilder {
 		try {
 			if ( companyName.length() == 0 ) {
                                 System.out.println("Entered empty");
-				listOfCompanies();
+				getListOfCompanies();
 			} else if ( monthlyEmpWage.get(companyName) != null ) {
 				int totalWage = (int)monthlyEmpWage.get(companyName);
                 	        System.out.println(companyName +" Employee wage for a month is " + totalWage);
                 	} else {
 				System.out.println("Entered invalid company name");
-				listOfCompanies();
+				getListOfCompanies();
                 	}
 		} catch (NullPointerException e) {
 			System.out.println("Entered Null");
-			listOfCompanies();
+			getListOfCompanies();
 		}
 	}
 
